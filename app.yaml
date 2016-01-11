@@ -1,0 +1,11 @@
+appname: "huhuran"
+entrypoints:
+  web:
+    cmd: "gunicorn -c gunicorn_config.py app:app"
+    ports:
+      - "5001/tcp"
+    network_mode: "host"
+build:
+  - "pip install -r requirements.txt"
+meta:
+  version: "ricebook"

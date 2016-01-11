@@ -1,0 +1,36 @@
+{% extends "/base.html" %}
+
+{% block main %}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <td>Name</td>
+        <td>Status</td>
+        <td>Operation</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for machine in machines %}
+        <tr>
+          <td>{{machine.name}}</a></td>
+          <td>{{'运行' if machine.is_alive else '挂了'}}</td>
+          <td><a data-machine-id="{{machine.id}}" class="btn btn-xs btn-warning" href="#">不要了</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block bottom_script %}
+<script>
+  $('a.btn').click(function (){
+    if (!confirm('确认不要了, 没提交的都没了哈')) {
+      return;
+    }
+    var self = $(this);
+    $.post('/machine/delete', {machine_id: self.data('machine-id')}, function(){
+      self.parent().parent().remove();
+    });
+  });
+</script>
+{% endblock %}

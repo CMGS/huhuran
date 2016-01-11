@@ -1,0 +1,96 @@
+{% extends "/base.html" %}
+
+{% block main %}
+<table class="table table-stripped">
+  <thead>
+    <tr>
+      <td>Name</td>
+      <td>Addr</td>
+      <td>Appname</td>
+      <td>Version</td>
+      <td>Entrypoint</td>
+      <td>Env</td>
+      <td>Network</td>
+      <td>Description</td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in images %}
+    <tr>
+      <td>{{i.name}}</td>
+      <td>{{i.addr}}</td>
+      <td>{{i.appname}}</td>
+      <td>{{i.version}}</td>
+      <td>{{i.entrypoint}}</td>
+      <td>{{i.env}}</td>
+      <td>{{i.network}}</td>
+      <td>{{i.desc}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<form class="form-horizontal" method="post" action="{{url_for('machine.create_image')}}">
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-offset-2">
+      <input name="name" type="text" class="form-control" placeholder="Name, only letters">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Addr</label>
+    <div class="col-sm-offset-2">
+      <input name="addr" type="text" class="form-control">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Appname</label>
+    <div class="col-sm-offset-2">
+      <input name="appname" type="text" class="form-control">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Version</label>
+    <div class="col-sm-offset-2">
+      <input name="version" type="text" class="form-control">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Entrypoint</label>
+    <div class="col-sm-offset-2">
+      <input name="entrypoint" type="text" class="form-control">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Env</label>
+    <div class="col-sm-offset-2">
+      <input name="env" type="text" class="form-control">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Network</label>
+    <div class="col-sm-offset-2">
+      <input name="network" type="text" class="form-control">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Description</label>
+    <div class="col-sm-offset-2">
+      <input name="desc" type="text" class="form-control">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-4">
+      <button type="submit" class="btn btn-primary">就决定是你了!</button>
+    </div>
+  </div>
+</form>
+{% endblock %}
