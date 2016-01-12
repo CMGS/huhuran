@@ -56,10 +56,12 @@ def create_machine():
         if DEPLOY_MODE == 'public':
             eru.deploy_public(PODNAME, image.appname, 1, image.version,
                               image.entrypoint, image.env, [image.network],
+                              raw=True, image=image.addr,
                               callback_url=callback_url)
         elif DEPLOY_MODE == 'private':
             eru.deploy_private(PODNAME, image.appname, 1, 1, image.version,
                               image.entrypoint, image.env, [image.network],
+                              raw=True, image=image.addr,
                               callback_url=callback_url)
     except EruException:
         pass
