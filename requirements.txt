@@ -2,5 +2,5 @@ Flask
 Flask-SQLAlchemy
 MySQL-python
 gunicorn
-eru-py
+eru-py==0.0.21
 redis
