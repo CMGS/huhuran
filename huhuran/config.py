@@ -25,6 +25,7 @@ OPENID_LOGIN_URL = os.getenv('OPENID_LOGIN_URL', 'http://openids-web.intra.hunan
 OPENID_PROFILE_URL = os.getenv('OPENID_PROFILE_URL', 'http://openids-web.intra.hunantv.com/oauth/profile/')
 
 ERU_URL = os.getenv('ERU_URL', '')
+DEPLOY_MODE = os.getenv('DEPLOY_MODE', 'public')
 PODNAME = os.getenv('PODNAME', 'dev')
 
 try:

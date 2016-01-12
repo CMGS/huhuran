@@ -5,7 +5,7 @@ from flask import (Blueprint, request, g, abort, jsonify,
 from eruhttp import EruException
 
 from huhuran.ext import eru
-from huhuran.config import PODNAME
+from huhuran.config import PODNAME, DEPLOY_MODE
 from huhuran.models import Machine, Image
 from huhuran.utils import need_login
 
@@ -53,9 +53,14 @@ def create_machine():
     machine = Machine.create(g.user, name)
     callback_url = url_for('machine.callback', machine_id=machine.id, _external=True)
     try:
-        eru.deploy_public(PODNAME, image.appname, 1, image.version,
-                          image.entrypoint, image.env, [image.network],
-                          callback_url=callback_url)
+        if DEPLOY_MODE == 'public':
+            eru.deploy_public(PODNAME, image.appname, 1, image.version,
+                              image.entrypoint, image.env, [image.network],
+                              callback_url=callback_url)
+        elif DEPLOY_MODE == 'private':
+            eru.deploy_private(PODNAME, image.appname, 1, 1, image.version,
+                              image.entrypoint, image.env, [image.network],
+                              callback_url=callback_url)
     except EruException:
         pass
     return redirect(url_for('machine.index'))
