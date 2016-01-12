@@ -3,9 +3,6 @@ entrypoints:
   web:
     cmd: "gunicorn -c gunicorn_config.py app:app"
     ports:
-      - "5001/tcp"
-    network_mode: "host"
+      - "5000/tcp"
 build:
   - "pip install -r requirements.txt"
-meta:
-  version: "ricebook"
