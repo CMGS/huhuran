@@ -27,6 +27,7 @@ OPENID_PROFILE_URL = os.getenv('OPENID_PROFILE_URL', 'http://openids-web.intra.h
 ERU_URL = os.getenv('ERU_URL', '')
 DEPLOY_MODE = os.getenv('DEPLOY_MODE', 'public')
 PODNAME = os.getenv('PODNAME', 'dev')
+GROUPNAME = os.getenv('GROUPNAME', 'group')
 
 try:
     from .local_config import *
