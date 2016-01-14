@@ -26,12 +26,13 @@ def callback(machine_id):
         return 'not found'
 
     data = request.get_json()
-    print data
     container_id = data['container_id']
     status = data.get('status')
+    netaddr = data['networks'][0]['address']
     machine.set_alive(status == 'start')
     if not machine.container_id:
         machine.set_container_id(container_id)
+        machine.set_netaddr(netaddr)
     return 'ok'
 
 
