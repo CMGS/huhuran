@@ -16,7 +16,6 @@ def authorized():
     resp = sso.authorized_response()
     if resp is None:
         abort(400)
-        print request.args['error_reason'], request.args['error_description']
     session['sso'] = (resp['access_token'], '')
     return redirect(url_for('user.login'))
 
