@@ -49,6 +49,10 @@ class Machine(Base):
     def get_by_user(cls, user):
         return cls.query.filter_by(user_id=user.id).all()
 
+    def set_backends(self, backend):
+        db.session.add(self)
+        db.session.commit()
+
     def set_container_id(self, container_id):
         try:
             eru.get_container(container_id)

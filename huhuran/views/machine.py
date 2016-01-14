@@ -26,6 +26,7 @@ def callback(machine_id):
         return 'not found'
 
     data = request.get_json()
+    print data
     container_id = data['container_id']
     status = data.get('status')
     machine.set_alive(status == 'start')
