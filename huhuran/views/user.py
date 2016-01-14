@@ -1,39 +1,36 @@
 # coding: utf-8
 
-import requests
-from flask import Blueprint, request, g, session, redirect, url_for
+from flask import Blueprint, request, session, redirect, url_for, abort
 
-from huhuran.config import OPENID_LOGIN_URL, OPENID_PROFILE_URL
-from huhuran.models import User
 from huhuran.utils import need_login
+from huhuran.oauth import sso
 
 bp = Blueprint('user', __name__, url_prefix='/user')
 
+@sso.tokengetter
+def get_oauth_token():
+    return session.get('sso')
+
+@bp.route('/authorized')
+def authorized():
+    resp = sso.authorized_response()
+    if resp is None:
+        abort(400)
+        print request.args['error_reason'], request.args['error_description']
+    session['sso'] = (resp['access_token'], '')
+    return redirect(url_for('user.login'))
 
 @bp.route('/login/')
 def login():
-    if g.user:
+    if 'sso' in session:
         return redirect(url_for('index.index'))
-    redir = request.host_url + 'user/login_from_openid/'
-    url = OPENID_LOGIN_URL % (redir, request.url)
-    return redirect(url)
-
+    return sso.authorize(
+        callback=url_for('user.authorized', _external=True)
+    )
 
 @bp.route('/logout/')
 @need_login
 def logout():
-    session.pop('id')
+    session.pop('sso')
     return redirect(url_for('index.index'))
 
-
-@bp.route('/login_from_openid/')
-def login_from_openid():
-    r = requests.get(OPENID_PROFILE_URL, params={'token': request.args.get('token', '')})
-    if r.status_code != 200:
-        return redirect(url_for('index.index'))
-
-    user_info = r.json()
-    u = User.get_or_create(user_info['username'], user_info['email'])
-    if u:
-        session['id'] = u.id
-    return redirect(url_for('index.index'))

@@ -6,7 +6,8 @@ from flask import Flask, request, g, session
 from werkzeug.utils import import_string
 
 from huhuran.ext import db
-from huhuran.models import User
+from huhuran.utils import get_user
+from huhuran.oauth import sso
 
 blueprints = (
     'index',
@@ -35,7 +36,7 @@ def create_app():
 
     @app.before_request
     def init_global_vars():
-        g.user = 'id' in session and User.get(session['id']) or None
+        g.user = 'sso' in session and get_user(sso.get('me').data) or None
         g.start = request.args.get('start', type=int, default=0)
         g.limit = request.args.get('limit', type=int, default=20)
 

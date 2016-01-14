@@ -10,24 +10,23 @@ MYSQL_USER = os.getenv('MYSQL_USER', 'root')
 MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD', '')
 MYSQL_DATABASE = os.getenv('MYSQL_DATABASE', 'huhuran')
 
-REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
-REDIS_PORT = int(os.getenv('REDIS_PORT', '6379'))
-
 SQLALCHEMY_POOL_SIZE = 100
 SQLALCHEMY_POOL_TIMEOUT = 10
 SQLALCHEMY_POOL_RECYCLE = 2000
 
 SERVER_PORT = int(os.getenv('SERVER_PORT', '5000'))
 SERVER_NAME = os.getenv('SERVER_NAME', '') or None
-SECRET_KEY = os.getenv('SECRET_KEY', '')
+SECRET_KEY = os.getenv('SECRET_KEY', 'wolegeca69ooxx')
 
-OPENID_LOGIN_URL = os.getenv('OPENID_LOGIN_URL', 'http://openids-web.intra.hunantv.com/oauth/login?return_to=%s&url=%s&days=14')
-OPENID_PROFILE_URL = os.getenv('OPENID_PROFILE_URL', 'http://openids-web.intra.hunantv.com/oauth/profile/')
+OAUTH2_CLIENT_ID = os.getenv('OAUTH2_CLIENT_ID', '')
+OAUTH2_CLIENT_SECRET = os.getenv('OAUTH2_CLIENT_SECRET', '')
+OAUTH2_ACCESS_TOKEN_URL = os.getenv('OAUTH2_ACCESS_TOKEN_URL', '')
+OAUTH2_AUTHORIZE_URL = os.getenv('OAUTH2_AUTHORIZE_URL', '')
+OAUTH2_BASE_URL = os.getenv('OAUTH2_BASE_URL', '')
 
 ERU_URL = os.getenv('ERU_URL', '')
-DEPLOY_MODE = os.getenv('DEPLOY_MODE', 'public')
 PODNAME = os.getenv('PODNAME', 'dev')
-GROUPNAME = os.getenv('GROUPNAME', 'group')
+DEPLOY_MODE = os.getenv('DEPLOY_MODE', 'public')
 
 try:
     from .local_config import *

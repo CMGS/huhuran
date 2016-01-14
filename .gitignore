@@ -2,3 +2,4 @@
 local_config.py
 tests/__pycache__/*
 venv
+init

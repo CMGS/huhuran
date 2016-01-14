@@ -6,7 +6,7 @@ sys.path.append(os.path.abspath('.'))
 
 from huhuran.app import create_app
 from huhuran.ext import db
-from huhuran.models import User, Machine, Image
+from huhuran.models import Machine, Image
 
 def flushdb(app):
     with app.app_context():

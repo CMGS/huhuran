@@ -5,9 +5,7 @@ import sqlalchemy.exc
 from sqlalchemy.ext.declarative import declared_attr
 from eruhttp import EruException
 
-from huhuran.ext import db, rds, eru
-
-_ERU_SSH_ROUTE_KEY = 'mimiron:%s:route'
+from huhuran.ext import db, eru
 
 
 class Base(db.Model):
@@ -33,6 +31,7 @@ class Machine(Base):
     container_id = db.Column(db.String(64), nullable=False, default='')
     time = db.Column(db.DateTime, default=datetime.datetime.now)
     user_id = db.Column(db.Integer, index=True)
+    netaddr = db.Column(db.String(16), index=True)
     is_alive = db.Column(db.Boolean, default=False)
 
     @classmethod
@@ -50,15 +49,9 @@ class Machine(Base):
     def get_by_user(cls, user):
         return cls.query.filter_by(user_id=user.id).all()
 
-    @property
-    def user(self):
-        return User.get(self.user_id)
-
     def set_container_id(self, container_id):
         try:
-            container = eru.get_container(container_id)
-            backend = container['backends'][0]
-            rds.hset(_ERU_SSH_ROUTE_KEY % self.user.name, self.name, backend)
+            eru.get_container(container_id)
         except (EruException, KeyError):
             return
 
@@ -72,38 +65,8 @@ class Machine(Base):
         db.session.commit()
 
     def delete(self):
-        rds.hdel(_ERU_SSH_ROUTE_KEY % self.user.name, self.name)
         db.session.delete(self)
         db.session.commit()
-
-
-class User(Base):
-    __tablename__ = 'user'
-    name = db.Column(db.String(255), index=True, nullable=False, default='')
-    email = db.Column(db.String(255), unique=True, nullable=False, default='')
-    admin = db.Column(db.Boolean)
-
-    @classmethod
-    def get_or_create(cls, name, email):
-        u = cls.get_by_email(email)
-        if u:
-            return u
-        try:
-            u = cls(name=name, email=email, admin=False)
-            db.session.add(u)
-            db.session.commit()
-            return u
-        except sqlalchemy.exc.IntegrityError:
-            db.session.rollback()
-            return None
-
-    @classmethod
-    def get_by_email(cls, email):
-        return cls.query.filter(cls.email == email).first()
-
-    @classmethod
-    def get_by_name(cls, name):
-        return cls.query.filter(cls.name == name).first()
 
 
 class Image(Base):

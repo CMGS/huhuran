@@ -6,14 +6,16 @@
       <tr>
         <td>Name</td>
         <td>Status</td>
+        <td>NetAddr</td>
         <td>Operation</td>
       </tr>
     </thead>
     <tbody>
       {% for machine in machines %}
         <tr>
-          <td>{{machine.name}}</a></td>
+          <td>{{machine.name}}</td>
           <td>{{'运行' if machine.is_alive else '挂了'}}</td>
+          <td>{{machine.netaddr}}</td>
           <td><a data-machine-id="{{machine.id}}" class="btn btn-xs btn-warning" href="#">不要了</a></td>
         </tr>
       {% endfor %}
