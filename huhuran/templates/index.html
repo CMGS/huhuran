@@ -16,7 +16,10 @@
           <td>{{machine.name}}</td>
           <td>{{'运行' if machine.is_alive else '挂了'}}</td>
           <td>{{machine.netaddr}}</td>
-          <td><a data-machine-id="{{machine.id}}" class="btn btn-xs btn-warning" href="#">不要了</a></td>
+          <td>
+            <a data-machine-id="{{machine.id}}" class="btn btn-xs btn-warning btn-remove" href="#">不要了</a>
+            <a data-machine-id="{{machine.id}}" class="btn btn-xs btn-warning btn-pubkey" href="#">加我的公钥</a>
+          </td>
         </tr>
       {% endfor %}
     </tbody>
@@ -25,13 +28,20 @@
 
 {% block bottom_script %}
 <script>
-  $('a.btn').click(function (){
+  $('a.btn-remove').click(function (){
     if (!confirm('确认不要了, 没提交的都没了哈')) {
       return;
     }
     var self = $(this);
     $.post('/machine/delete', {machine_id: self.data('machine-id')}, function(){
       self.parent().parent().remove();
+    });
+  });
+
+  $('a.btn-pubkey').click(function (){
+    var self = $(this);
+    $.post('/machine/pubkey', {machine_id: self.data('machine-id')}, function(r){
+      alert(r.error);
     });
   });
 </script>
