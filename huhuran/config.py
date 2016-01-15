@@ -26,6 +26,8 @@ OAUTH2_BASE_URL = os.getenv('OAUTH2_BASE_URL', '')
 
 ERU_URL = os.getenv('ERU_URL', '')
 PODNAME = os.getenv('PODNAME', 'dev')
+DEFAULT_PASS = os.getenv('DEFAULT_PASS', '')
+DEFAULT_USER = os.getenv('DEFAULT_USER', '')
 DEPLOY_MODE = os.getenv('DEPLOY_MODE', 'public')
 
 try:

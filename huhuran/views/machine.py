@@ -7,7 +7,7 @@ from eruhttp import EruException
 from huhuran.ext import eru
 from huhuran.config import PODNAME, DEPLOY_MODE
 from huhuran.models import Machine, Image
-from huhuran.utils import need_login
+from huhuran.utils import need_login, add_pubkey
 
 bp = Blueprint('machine', __name__, url_prefix='/machine')
 
@@ -85,6 +85,23 @@ def delete_machine():
 
     machine.delete()
     return jsonify(r=0)
+
+
+@bp.route('/pubkey', methods=['POST'])
+@need_login
+def add_public_key():
+    machine = Machine.get(request.form['machine_id'])
+    if not (machine and machine.container_id):
+        return jsonify(error=u'机器挂了')
+
+    container = eru.get_container(machine.container_id)
+    if not container['networks']:
+        return jsonify(error=u'机器没有对外开放')
+
+    netaddr = container['networks'][0]['address']
+    if add_pubkey(g.user.pubkey, netaddr):
+        return jsonify(error=u'添加成功')
+    return jsonify(error=u'因为一些奇怪的原因添加失败')
 
 
 @bp.route('/create_image', methods=['GET', 'POST'])
