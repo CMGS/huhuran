@@ -87,6 +87,16 @@ def delete_machine():
     return jsonify(r=0)
 
 
+@bp.route('/alive', methods=['POST'])
+@need_login
+def is_alive():
+    machine = Machine.get(request.form['machine_id'])
+    if not machine:
+        return jsonify(r=0)
+
+    return jsonify(r=machine.is_alive)
+
+
 @bp.route('/pubkey', methods=['POST'])
 @need_login
 def add_public_key():

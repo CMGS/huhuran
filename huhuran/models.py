@@ -50,6 +50,15 @@ class Machine(Base):
     def get_by_user(cls, user):
         return cls.query.filter_by(user_id=user.id).all()
 
+    @classmethod
+    def list_machines(cls, start=0, limit=20):
+        q = cls.query.order_by(cls.id.desc())
+        total = q.count()
+        q = q.offset(start)
+        if limit is not None:
+            q = q.limit(limit)
+        return q.all(), total
+
     def set_netaddr(self, netaddr):
         self.netaddr = netaddr
         db.session.add(self)

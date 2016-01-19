@@ -17,6 +17,15 @@ def need_login(f):
     return _
 
 
+def need_admin(f):
+    @wraps(f)
+    def _(*args, **kwargs):
+        if not g.user or not int(g.user.admin):
+            return redirect(url_for('machine.index'))
+        return f(*args, **kwargs)
+    return _
+
+
 class Obj(object):pass
 
 
@@ -50,3 +59,11 @@ def add_pubkey(key, remote_addr):
         return stderr.read() == ''
     finally:
         client.close()
+
+
+def paginator_kwargs(kw):
+    d = kw.copy()
+    d.pop('start', None)
+    d.pop('limit', None)
+    return d
+
