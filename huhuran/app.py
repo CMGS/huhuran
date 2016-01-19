@@ -10,6 +10,7 @@ from huhuran.utils import get_user
 from huhuran.oauth import sso
 
 blueprints = (
+    'admin',
     'index',
     'user',
     'machine',

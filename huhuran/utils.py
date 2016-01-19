@@ -17,6 +17,15 @@ def need_login(f):
     return _
 
 
+def need_admin(f):
+    @wraps(f)
+    def _(*args, **kwargs):
+        if not g.user or not int(g.user.admin):
+            return redirect(url_for('machine.index'))
+        return f(*args, **kwargs)
+    return _
+
+
 class Obj(object):pass
 
 
