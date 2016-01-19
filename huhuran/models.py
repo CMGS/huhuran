@@ -31,13 +31,14 @@ class Machine(Base):
     container_id = db.Column(db.String(64), nullable=False, default='')
     time = db.Column(db.DateTime, default=datetime.datetime.now)
     user_id = db.Column(db.Integer, index=True)
+    user_name = db.Column(db.String(255), index=True)
     netaddr = db.Column(db.String(16), index=True)
     is_alive = db.Column(db.Boolean, default=False)
 
     @classmethod
     def create(cls, user, name):
         try:
-            r = cls(name=name, user_id=user.id)
+            r = cls(name=name, user_id=user.id, user_name=user.name)
             db.session.add(r)
             db.session.commit()
             return r
