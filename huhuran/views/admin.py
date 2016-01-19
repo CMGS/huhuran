@@ -1,8 +1,7 @@
 #!/usr/bin/python
 #coding:utf-8
 
-from flask import (Blueprint, request, g, abort, jsonify,
-                   render_template, url_for, redirect)
+from flask import Blueprint, g, render_template
 
 from huhuran.models import Machine
 from huhuran.utils import need_admin
