@@ -14,7 +14,7 @@
       {% for machine in machines %}
         <tr>
           <td>{{machine.name}}</td>
-          <td>{{'运行' if machine.is_alive else '挂了'}}</td>
+          <td class="td-ready" data-machine-id="{{machine.id}}">{{'运行' if machine.is_alive else '挂了'}}</td>
           <td>{{machine.netaddr}}</td>
           <td>
             <a data-machine-id="{{machine.id}}" class="btn btn-xs btn-warning btn-remove" href="#">不要了</a>
