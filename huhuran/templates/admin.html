@@ -1,0 +1,52 @@
+{% extends "/base.html" %}
+{% import "/utils.html" as utils %}
+
+{% block main %}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <td>Name</td>
+        <td>Owner</td>
+        <td>Status</td>
+        <td>NetAddr</td>
+        <td>Operation</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for machine in machines %}
+        <tr>
+          <td>{{machine.name}}</td>
+          <td>{{machine.user_name}}</td>
+          <td>{{'运行' if machine.is_alive else '挂了'}}</td>
+          <td>{{machine.netaddr}}</td>
+          <td>
+            <a data-machine-id="{{machine.id}}" class="btn btn-xs btn-warning btn-remove" href="#">不要了</a>
+            <a data-machine-id="{{machine.id}}" class="btn btn-xs btn-warning btn-pubkey" href="#">加我的公钥</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {{utils.paginator(g.start, total, g.limit, endpoint)}}
+{% endblock %}
+
+{% block bottom_script %}
+<script>
+  $('a.btn-remove').click(function (){
+    if (!confirm('确认不要了, 没提交的都没了哈')) {
+      return;
+    }
+    var self = $(this);
+    $.post('/machine/delete', {machine_id: self.data('machine-id')}, function(){
+      self.parent().parent().remove();
+    });
+  });
+
+  $('a.btn-pubkey').click(function (){
+    var self = $(this);
+    $.post('/machine/pubkey', {machine_id: self.data('machine-id')}, function(r){
+      alert(r.error);
+    });
+  });
+</script>
+{% endblock %}

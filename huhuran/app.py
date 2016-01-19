@@ -6,8 +6,9 @@ from flask import Flask, request, g, session
 from werkzeug.utils import import_string
 
 from huhuran.ext import db
-from huhuran.utils import get_user
 from huhuran.oauth import sso
+from huhuran.utils import get_user
+from huhuran.utils import paginator_kwargs
 
 blueprints = (
     'admin',
@@ -32,7 +33,7 @@ def create_app():
         import_name = '%s.views.%s:bp' % (__package__, bp)
         app.register_blueprint(import_string(import_name))
 
-    for fl in (max, min):
+    for fl in (max, min, paginator_kwargs):
         app.add_template_global(fl)
 
     @app.before_request

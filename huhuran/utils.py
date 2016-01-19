@@ -59,3 +59,11 @@ def add_pubkey(key, remote_addr):
         return stderr.read() == ''
     finally:
         client.close()
+
+
+def paginator_kwargs(kw):
+    d = kw.copy()
+    d.pop('start', None)
+    d.pop('limit', None)
+    return d
+
